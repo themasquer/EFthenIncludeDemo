@@ -7,10 +7,11 @@ namespace EFthenIncludeDemo
 {
     internal class Program
     {
-        static Repo<Ogrenci> _repo = new Repo<Ogrenci>();
+        static Repo<Ogrenci> _repo;
 
         static void Main(string[] args)
         {
+            _repo = new Repo<Ogrenci>();
             var query = _repo.Query(ogrenci => ogrenci.Bolum);
             var list = query.ToList();
             foreach (var item in list)
@@ -19,6 +20,7 @@ namespace EFthenIncludeDemo
 
             Console.WriteLine();
 
+            _repo = new Repo<Ogrenci>();
             query = _repo.Query(ogrenci => ogrenci.Bolum, ogrenci => ogrenci.OgrenciDers);
             list = query.ToList();
             foreach (var item in list)
