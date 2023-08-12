@@ -29,7 +29,7 @@ namespace EFthenIncludeDemo
 
     public class Repo<TEntity> where TEntity : class, new()
     {
-        KursDbContext _db = new KursDbContext();
+        KursAdvancedDbContext _db = new KursAdvancedDbContext();
 
         public virtual IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] entitiesToInclude)
         {

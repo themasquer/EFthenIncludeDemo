@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFthenIncludeDemo.Contexts;
 
-public partial class KursDbContext : DbContext
+public partial class KursAdvancedDbContext : DbContext
 {
-    public KursDbContext()
+    public KursAdvancedDbContext()
     {
     }
 
-    public KursDbContext(DbContextOptions<KursDbContext> options)
+    public KursAdvancedDbContext(DbContextOptions<KursAdvancedDbContext> options)
         : base(options)
     {
     }
@@ -26,7 +26,7 @@ public partial class KursDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=KursDB;trusted_connection=true;trustservercertificate=true;");
+        => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=KursAdvancedDB;trusted_connection=true;trustservercertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,7 +39,7 @@ public partial class KursDbContext : DbContext
 
         modelBuilder.Entity<Ders>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ders__3214EC07F16D6B61");
+            entity.HasKey(e => e.Id).HasName("PK__Ders__3214EC0731C27678");
 
             entity.Property(e => e.Adi)
                 .HasMaxLength(75)
@@ -49,13 +49,9 @@ public partial class KursDbContext : DbContext
 
         modelBuilder.Entity<Ogrenci>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ogrenci__3214EC07E4923A14");
+            entity.HasKey(e => e.Id).HasName("PK__Ogrenci__3214EC07444A0911");
 
             entity.Property(e => e.Adi).HasMaxLength(100);
-            entity.Property(e => e.OgrenciNo)
-                .HasMaxLength(5)
-                .IsUnicode(false)
-                .IsFixedLength();
             entity.Property(e => e.Soyadi)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -68,8 +64,6 @@ public partial class KursDbContext : DbContext
 
         modelBuilder.Entity<OgrenciDers>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-
             entity.HasOne(d => d.Ders).WithMany(p => p.OgrenciDers)
                 .HasForeignKey(d => d.DersId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

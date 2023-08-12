@@ -1,14 +1,14 @@
 ﻿use master
 go
-if exists (select name from sys.databases where name = 'KursDB')
+if exists (select name from sys.databases where name = 'KursAdvancedDB')
 begin
-	alter database KursDB set single_user with rollback immediate -- veritabanı bağlantısını koparmak için özel sorgu
-	drop database KursDB -- veritabanını silen esas sorgu
+	alter database KursAdvancedDB set single_user with rollback immediate -- veritabanı bağlantısını koparmak için özel sorgu
+	drop database KursAdvancedDB -- veritabanını silen esas sorgu
 end
 go
-create database KursDB
+create database KursAdvancedDB
 go
-USE [KursDB]
+USE [KursAdvancedDB]
 GO
 SET ANSI_NULLS ON
 GO
@@ -44,8 +44,10 @@ CREATE TABLE [dbo].[Ogrenci](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Adi] [nvarchar](100) NOT NULL,
 	[Soyadi] [varchar](100) NOT NULL,
-	[OgrenciNo] [char](5) NULL,
-	[BolumId] int NOT NULL
+	[OgrenciNo] int NULL,
+	[BolumId] int NOT NULL,
+	[MezunMu] bit NOT NULL,
+	[Cinsiyeti] int NOT NULL
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -58,7 +60,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[OgrenciDers](
-	[Id] int NOT NULL,
+	[Id] int IDENTITY(1,1) NOT NULL,
 	[OgrenciId] [int] NOT NULL,
 	[DersId] [int] NOT NULL,
  CONSTRAINT [PK_OgrenciDers] PRIMARY KEY CLUSTERED 
@@ -87,11 +89,13 @@ SET IDENTITY_INSERT [dbo].[Ders] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Ogrenci] ON 
 GO
-INSERT [dbo].[Ogrenci] ([Id], [Adi], [Soyadi], [OgrenciNo], [BolumId]) VALUES (1, N'Çağıl', N'Alsaç', '12345', 2)
+INSERT [dbo].[Ogrenci] ([Id], [Adi], [Soyadi], [OgrenciNo], [BolumId], [MezunMu], [Cinsiyeti]) VALUES (1, N'Çağıl', N'Alsaç', 10000, 2, 1, 1)
 GO
-INSERT [dbo].[Ogrenci] ([Id], [Adi], [Soyadi], [OgrenciNo], [BolumId]) VALUES (2, N'Ali', N'Vefa', '67890', 1)
+INSERT [dbo].[Ogrenci] ([Id], [Adi], [Soyadi], [OgrenciNo], [BolumId], [MezunMu], [Cinsiyeti]) VALUES (2, N'Yasemin', N'Kaya', 10001, 1, 0, 2)
 GO
 SET IDENTITY_INSERT [dbo].[Ogrenci] OFF
+GO
+SET IDENTITY_INSERT [dbo].[OgrenciDers] ON 
 GO
 INSERT [dbo].[OgrenciDers] ([Id], [OgrenciId], [DersId]) VALUES (1, 1, 1)
 GO
@@ -102,6 +106,8 @@ GO
 INSERT [dbo].[OgrenciDers] ([Id], [OgrenciId], [DersId]) VALUES (4, 2, 1)
 GO
 INSERT [dbo].[OgrenciDers] ([Id], [OgrenciId], [DersId]) VALUES (5, 2, 3)
+GO
+SET IDENTITY_INSERT [dbo].[OgrenciDers] OFF
 GO
 ALTER TABLE [dbo].[OgrenciDers]  WITH CHECK ADD FOREIGN KEY([DersId])
 REFERENCES [dbo].[Ders] ([Id])

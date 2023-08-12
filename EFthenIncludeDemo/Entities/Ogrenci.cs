@@ -11,9 +11,13 @@ public partial class Ogrenci
 
     public string Soyadi { get; set; } = null!;
 
-    public string? OgrenciNo { get; set; }
+    public int? OgrenciNo { get; set; }
 
     public int BolumId { get; set; }
+
+    public bool MezunMu { get; set; }
+
+    public int Cinsiyeti { get; set; }
 
     public virtual Bolum Bolum { get; set; } = null!;
 
